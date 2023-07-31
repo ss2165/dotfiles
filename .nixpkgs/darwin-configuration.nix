@@ -12,6 +12,7 @@
       pkgs.nil
       pkgs.nixpkgs-fmt
     ];
+
     # programs.vim.enable = true;
     programs.gh.enable = true;
     programs.bat.enable = true;
@@ -72,7 +73,7 @@
       userEmail = "seyon.sivarajah@quantinuum.com";
       extraConfig = {
         core = {
-          editor = "code";
+          editor = "code --wait";
           longpaths = true;
         };
 
@@ -110,7 +111,7 @@
 
   environment.systemPackages = [
     # install devenv
-    (import (fetchTarball "https://github.com/cachix/devenv/archive/v0.6.2.tar.gz")).default
+    (import (fetchTarball "https://github.com/cachix/devenv/archive/v0.6.3.tar.gz")).default
   ];
 
   homebrew = {
