@@ -1,5 +1,6 @@
 # https://github.com/LnL7/nix-darwin/
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
+
   imports = [ <home-manager/nix-darwin> ];
 
   users.users.seyon = {
@@ -11,12 +12,16 @@
     home.packages = [
       pkgs.nil
       pkgs.nixpkgs-fmt
+      pkgs.gimp
+      pkgs.zoxide
+      pkgs.fzf
+      pkgs.git-stack
     ];
 
     # programs.vim.enable = true;
     programs.gh.enable = true;
     programs.bat.enable = true;
-    programs.exa.enable = true;
+    programs.eza.enable = true;
     programs.starship.enable = true;
     programs.direnv.enable = true;
     programs.direnv.nix-direnv.enable = true;
@@ -43,8 +48,10 @@
       };
       shellAliases = {
         cat = "bat";
-        ls = "exa";
+        ls = "eza";
         cfgit = "git --git-dir=$HOME/.cfg_git/ --work-tree=$HOME";
+        cd = "z";
+        cdi = "zi";
       };
 
       shellAbbrs = {
@@ -52,7 +59,7 @@
       };
 
       shellInit =
-        "eval (${osConfig.homebrew.brewPrefix}/brew shellenv)\nvscodehook";
+        "eval (${osConfig.homebrew.brewPrefix}/brew shellenv)\nvscodehook\nzoxide init fish | source";
     };
 
     programs.git = {
@@ -65,9 +72,13 @@
         st = "status";
         pushf = "push --force-with-lease";
         amend = "commit --amend --no-edit";
-        reword = "commit --amend";
         smartlog = "log --graph --pretty=format:'commit: %C(bold red)%h%Creset %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'";
         slog = "smartlog";
+        next = "stack next";
+        prev = "stack previous";
+        sync = "stack sync";
+        run = "stack run";
+        reword = "stack reword";
       };
       userName = "Seyon Sivarajah";
       userEmail = "seyon.sivarajah@quantinuum.com";
@@ -111,7 +122,9 @@
 
   environment.systemPackages = [
     # install devenv
-    (import (fetchTarball "https://github.com/cachix/devenv/archive/v0.6.3.tar.gz")).default
+    # (import (fetchTarball
+    # "https://github.com/cachix/devenv/archive/v0.6.3.tar.gz")).default
+    pkgs.devenv
   ];
 
   homebrew = {
@@ -134,4 +147,5 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+
 }
